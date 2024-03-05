@@ -20,7 +20,6 @@ A idéia do projeto é ser um sistema de gerenciamento de estoque de material es
 - [Detalhes da Categoria](#detalhes-da-categoria)
 - [Apagar categoria](#apagar-categoria)
 - [Atualizar categoria](#atualizar-categoria)
- - VERBO + PATH
 
 ### Listar Categorias
 `GET` /categoria
