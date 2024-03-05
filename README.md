@@ -1,10 +1,10 @@
 # Projeto-Java-Advanced-FIAP
 Repositório destinado ao projeto do 1° semestre da matéria de Java Advanced da faculdade.
-A idéia do projeto é ser um sistema de gerenciamento de estoque.
+A idéia do projeto é ser um sistema de gerenciamento de estoque de material escolar.
 
 ## Requisitos
 
- - [ ] CRUD de cateogiras
+ - [ ] CRUD de categorias
  - [ ] CRUD de Movimentações
  - [ ] CRUD de Usuários
  - [ ] Autenticação
@@ -31,13 +31,13 @@ Retorna um array com todas as categorias cadastradas.
 ```js
 [
     {
-        "nome": "Alimentação",
-        "icone": "fast-food"
+        "nome": "Cadernos",
+        "icone": "notebook"
     },
     {
         "id": 2,
-        "nome": "Educação",
-        "icone": "book"
+        "nome": "Canetas",
+        "icone": "pen"
     }
 ]
 ```
@@ -66,8 +66,8 @@ Cadastrar uma nova categoria para o usuário logado com os dados enviados no cor
 
 ```js
 {
-    "nome": "Alimentação",
-    "icone": "fast-food"
+    "nome": "Cadernos",
+    "icone": "notebook"
 }
 ```
 
@@ -89,8 +89,8 @@ Retorna os dados detalhados da categoria com o `id` informado no parametro de pa
 //requisição para /categoria/1
 {
     "id": 1,
-    "nome": "Alimentação",
-    "icone": "fast-food"
+    "nome": "Cadernos",
+    "icone": "notebook"
 }
 ```
 
@@ -131,8 +131,8 @@ Atualizar os dados da categoria com o `id` informado no path, utilizando os novo
 
 ```js
 {
-    "nome": "Alimentação",
-    "icone": "fast-food"
+    "nome": "Cadernos",
+    "icone": "notebook"
 }
 ```
 
