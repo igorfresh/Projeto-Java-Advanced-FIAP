@@ -3,8 +3,8 @@ Repositório destinado ao projeto do 1° semestre da matéria de Java Advanced d
 A idéia do projeto é ser um sistema de gerenciamento de estoque de material escolar.
 
 #### Integrantes
-Igor Miguel Silva
-João Pedro Costa Feitosa
+Igor Miguel Silva |
+ João Pedro Costa Feitosa
 
 ## Requisitos
 
