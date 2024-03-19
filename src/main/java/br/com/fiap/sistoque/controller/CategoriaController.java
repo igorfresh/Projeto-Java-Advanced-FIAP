@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,11 +20,9 @@ import org.springframework.web.server.ResponseStatusException;
 
 import br.com.fiap.sistoque.model.Categoria;
 import br.com.fiap.sistoque.repository.CategoriaRepository;
-import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("categoria")
-@Slf4j
 public class CategoriaController {
 
     Logger log = LoggerFactory.getLogger(getClass());
