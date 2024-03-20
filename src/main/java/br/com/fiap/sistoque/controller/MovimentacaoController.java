@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.fiap.sistoque.model.Movimentacao;
 import br.com.fiap.sistoque.repository.MovimentacaoRepository;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("movimentacao")
@@ -28,7 +29,7 @@ public class MovimentacaoController {
 
     @PostMapping
     @ResponseStatus(CREATED)
-    public Movimentacao create(@RequestBody Movimentacao movimentacao){
+    public Movimentacao create(@RequestBody @Valid Movimentacao movimentacao){
         return repository.save(movimentacao);
     }
 
