@@ -7,7 +7,7 @@ public class TipoMovimentacaoValidator implements ConstraintValidator<TipoMovime
     
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
-        return value.equals("ENTRADA") || value.equals("SAÍDA");
+        return value.equals("ENTRADA") || value.equals("SAIDA");
     }
         
 }

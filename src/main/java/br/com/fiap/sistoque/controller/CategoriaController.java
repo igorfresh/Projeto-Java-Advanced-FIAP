@@ -1,12 +1,9 @@
 package br.com.fiap.sistoque.controller;
 
-
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.ai.openai.OpenAiChatClient;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,21 +18,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
-
 import br.com.fiap.sistoque.model.Categoria;
 import br.com.fiap.sistoque.repository.CategoriaRepository;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
-
 @RestController
 @RequestMapping("categoria")
 @Slf4j
 public class CategoriaController {
 
-    Logger log = LoggerFactory.getLogger(getClass());
-
     @Autowired
     CategoriaRepository repository;
 
+    @Autowired
+    OpenAiChatClient gpt;
+    
     @GetMapping
     public List<Categoria> index() {
         return repository.findAll();
@@ -44,8 +41,10 @@ public class CategoriaController {
 
     @PostMapping
     @ResponseStatus(CREATED)
-    public Categoria create(@RequestBody Categoria categoria) { // binding
+    public Categoria create(@RequestBody @Valid Categoria categoria) { // binding
         log.info("cadastrando categoria {} ", categoria);
+        var icone = gpt.call("Sugira um icone do Material Icons para uma categoria chamada " + categoria.getNome() + ". Retorne apenas o nome do ícone");
+        categoria.setIcone(icone);
         return repository.save(categoria);
     }
 

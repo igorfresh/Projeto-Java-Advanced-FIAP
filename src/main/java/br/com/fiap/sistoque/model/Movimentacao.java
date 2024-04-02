@@ -22,8 +22,8 @@ public class Movimentacao {
     @Id @GeneratedValue(strategy = GenerationType.AUTO) //dizer qual a estratégia pra gerar a chave primária
     private Long id;
 
-    @NotBlank(message = "{movimentacao.descricao.notblank}")
-    @Size(min = 3, max = 255, message = "{movimentacao.descricao.size}")
+    @NotBlank(message = "{movimentacao.nome.notblank}")
+    @Size(min = 3, max = 255, message = "{movimentacao.nome.size}")
     private String descricao;
 
     @Positive(message = "{movimentacao.valor.positive}")
