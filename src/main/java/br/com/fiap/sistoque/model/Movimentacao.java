@@ -21,9 +21,9 @@ public class Movimentacao {
     @Id @GeneratedValue(strategy = GenerationType.AUTO) //dizer qual a estratégia pra gerar a chave primária
     private Long id;
 
-    @NotBlank(message = "Descrição é obrigatório")
-    @Size(min = 3, max = 255, message = "Descrição deve ter pelo menos 3 caracteres")
-    private String descricao;
+    @NotBlank(message = "Nome do produto é obrigatório")
+    @Size(min = 3, max = 70, message = "Descrição deve ter pelo menos 3 caracteres")
+    private String nomeProduto;
 
     @Positive(message = "O valor deve ser positivo")
     private BigDecimal valor;
