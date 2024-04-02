@@ -22,7 +22,7 @@ public class Movimentacao {
     private Long id;
 
     @NotBlank(message = "Nome do produto é obrigatório")
-    @Size(min = 3, max = 70, message = "Descrição deve ter pelo menos 3 caracteres")
+    @Size(min = 3, max = 70, message = "Nome deve ter pelo menos 3 caracteres")
     private String nomeProduto;
 
     @Positive(message = "O valor deve ser positivo")
