@@ -3,7 +3,6 @@ package br.com.fiap.sistoque.controller;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 import java.util.List;
-import org.springframework.ai.openai.OpenAiChatClient;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,8 +29,6 @@ public class CategoriaController {
     @Autowired
     CategoriaRepository repository;
 
-    @Autowired
-    OpenAiChatClient gpt;
     
     @GetMapping
     public List<Categoria> index() {
@@ -43,8 +40,6 @@ public class CategoriaController {
     @ResponseStatus(CREATED)
     public Categoria create(@RequestBody @Valid Categoria categoria) { // binding
         log.info("cadastrando categoria {} ", categoria);
-        var icone = gpt.call("Sugira um icone do Material Icons para uma categoria chamada " + categoria.getNome() + ". Retorne apenas o nome do ícone");
-        categoria.setIcone(icone);
         return repository.save(categoria);
     }
 
