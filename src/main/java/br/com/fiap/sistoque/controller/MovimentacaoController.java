@@ -21,8 +21,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.fiap.sistoque.controller.MovimentacaoController.TotalPorCategoria;
-import br.com.fiap.sistoque.controller.MovimentacaoController.TotalPorMes;
 import br.com.fiap.sistoque.model.Movimentacao;
 import br.com.fiap.sistoque.repository.MovimentacaoRepository;
 import jakarta.validation.Valid;
