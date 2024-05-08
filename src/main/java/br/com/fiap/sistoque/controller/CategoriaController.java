@@ -24,12 +24,17 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import br.com.fiap.sistoque.model.Categoria;
 import br.com.fiap.sistoque.repository.CategoriaRepository;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 @RestController
 @RequestMapping("categoria")
 @CacheConfig(cacheNames = "categorias")
 @Slf4j
+@Tag(name = "categorias", description = "Categorias de produtos de material escolar")
 public class CategoriaController {
 
     @Autowired
@@ -38,6 +43,10 @@ public class CategoriaController {
     
     @GetMapping
     @Cacheable("categorias")
+    @Operation(
+        summary = "Listar Categorias",
+        description = "Retorna um array com todas as categorias de produto cadastradas."
+    )
     public List<Categoria> index() {
         return repository.findAll();
     }
@@ -46,6 +55,14 @@ public class CategoriaController {
     @PostMapping
     @ResponseStatus(CREATED)
     @CacheEvict(allEntries = true)
+    @Operation(
+        summary = "Cadastrar Categoria",
+        description = "Cadastra uma nova categoria de produto com os dados enviados na requisição."
+    )
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Categoria cadastrada com sucesso"),
+        @ApiResponse(responseCode = "401", description = "Validação falhou. Verifique as regras para o corpo da requisição", useReturnTypeSchema = false)
+    })
     public Categoria create(@RequestBody @Valid Categoria categoria) { // binding
         log.info("cadastrando categoria {} ", categoria);
         return repository.save(categoria);
@@ -53,6 +70,15 @@ public class CategoriaController {
 
 
     @GetMapping("{id}")
+    @Operation(
+        summary = "Detalhes da Categoria",
+        description = "Retorna os dados detalhados da categoria com o ID informado no parametro do path"
+    )
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Categorias retornadas com sucesso"),
+        @ApiResponse(responseCode = "401", description = "Usuário não autenticado. Realize a autenticação em /login."),
+        @ApiResponse(responseCode = "404", description = "Não existe categoria com o ID informado. Consulte lista em /categoria")
+        })
     public ResponseEntity<Categoria> show(@PathVariable Long id) {
         log.info("buscando categoria por id {}", id);
 
@@ -72,6 +98,15 @@ public class CategoriaController {
     @DeleteMapping("{id}")
     @ResponseStatus(NO_CONTENT)
     @CacheEvict(allEntries = true)
+    @Operation(
+        summary = "Apagar Categoria",
+        description = "Apaga a categoria indicada pelo ID enviado no parametro de path."
+    )
+    @ApiResponses({
+        @ApiResponse(responseCode = "204", description = "Categoria apagada com sucesso."),
+        @ApiResponse(responseCode = "401", description = "Usuário não autenticado. Realize autenticação em /login"),
+        @ApiResponse(responseCode = "404", description = "Não existe categoria com o ID informado. Consulte lista em /categoria")
+    })
     public void destroy(@PathVariable Long id) {
         log.info("apagando categoria");
 
@@ -93,6 +128,16 @@ public class CategoriaController {
 
     @PutMapping("{id}")
     @CacheEvict(allEntries = true)
+    @Operation(
+        summary = "Atualizar Categoria",
+        description = "Atualizar os dados da categoria com o ID informado no path, utilizando os novos dados enviados no corpo da requisição."
+    )
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Categoria atualizada com sucesso."),
+        @ApiResponse(responseCode = "400", description = "Validação falhou. Verifique as regras para o corpo da requisição"),
+        @ApiResponse(responseCode = "401", description = "Usuário não autenticado. Realize autenticação em /login"),
+        @ApiResponse(responseCode = "404", description = "Não existe categoria com o ID informado. Consulte lista em /categoria")
+    })
     public Categoria update (@PathVariable Long id, @RequestBody Categoria categoria) {
         log.info("atualizando categoria com id {} para {}", id, categoria);
 
