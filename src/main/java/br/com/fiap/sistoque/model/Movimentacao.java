@@ -3,6 +3,8 @@ package br.com.fiap.sistoque.model;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import org.springframework.hateoas.EntityModel;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import br.com.fiap.sistoque.validation.TipoMovimentacao;
@@ -24,7 +26,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Movimentacao {
+public class Movimentacao extends EntityModel<Movimentacao> {
     
 
     @Id @GeneratedValue(strategy = GenerationType.AUTO) //dizer qual a estratégia pra gerar a chave primária
