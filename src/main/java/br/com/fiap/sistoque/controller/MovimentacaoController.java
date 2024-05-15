@@ -13,8 +13,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.Link;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,8 +27,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 import br.com.fiap.sistoque.model.Movimentacao;
 import br.com.fiap.sistoque.repository.MovimentacaoRepository;
 import jakarta.validation.Valid;
@@ -42,50 +41,56 @@ public class MovimentacaoController {
     @Autowired
     MovimentacaoRepository repository;
 
+    @Autowired
+    PagedResourcesAssembler<Movimentacao> pageAssembler;
+
     @GetMapping("{id}")
     public EntityModel<Movimentacao> show(@PathVariable Long id) {
         var movimentacao = repository.findById(id).orElseThrow(
             () -> new IllegalArgumentException("movimentação não encontrada")
         );
 
-        return EntityModel.of(
-            movimentacao,
-            linkTo(methodOn(MovimentacaoController.class).show(id)).withSelfRel(),
-            linkTo(methodOn(MovimentacaoController.class).show(id)).withRel("delete"),
-            linkTo(methodOn(MovimentacaoController.class).index(null, null, null)).withRel("contents")
-        );
+        return movimentacao.toEntityModel();
     }
 
     @DeleteMapping("{id}")
     public ResponseEntity<Object> destroy(@PathVariable Long id){
-        repository.findById(id).orElseThrow{
+        repository.findById(id).orElseThrow(
             () -> new IllegalArgumentException("movimentação não encontrada")
-        };
+        );
 
-        return repository.deleteById(id);
+        repository.deleteById(id);
+
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping
-    public Page<Movimentacao> index(
+    public PagedModel<EntityModel<Movimentacao>> index(
         @RequestParam(required = false) String categoria,
             @RequestParam(required = false) Integer mes,
             @PageableDefault(size = 5, sort = "data", direction = Direction.DESC) Pageable pageable
 
-    ){
+    )   {
+
+        Page<Movimentacao> page = null;
+
         if(mes != null && categoria != null){
-            return repository.findByCategoriaNomeAndMes(categoria, mes, pageable);
+            page = repository.findByCategoriaNomeAndMes(categoria, mes, pageable);
         }
 
         if (mes != null){
-            return repository.findByMes(mes, pageable);
+            page =  repository.findByMes(mes, pageable);
         }
 
         if (categoria != null){
-            return repository.findByCategoriaNome(categoria, pageable);
+            page = repository.findByCategoriaNome(categoria, pageable);
         }
 
-        return repository.findAll(pageable);
+        if (page == null) {
+            page = repository.findAll(pageable);
+        }
 
+        return pageAssembler.toModel(page);
     
     }
 
@@ -162,8 +167,12 @@ public class MovimentacaoController {
 
     @PostMapping
     @ResponseStatus(CREATED)
-    public Movimentacao create(@RequestBody @Valid Movimentacao movimentacao){
-        return repository.save(movimentacao);
+    public ResponseEntity<Movimentacao> create(@RequestBody @Valid Movimentacao movimentacao){
+        repository.save(movimentacao);
+
+        return ResponseEntity
+        .created(movimentacao.toEntityModel().getRequiredLink("self").toUri())
+        .body(movimentacao);
 
     }
 

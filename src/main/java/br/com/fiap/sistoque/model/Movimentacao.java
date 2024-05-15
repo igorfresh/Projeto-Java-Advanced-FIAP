@@ -1,5 +1,8 @@
 package br.com.fiap.sistoque.model;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -7,6 +10,7 @@ import org.springframework.hateoas.EntityModel;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import br.com.fiap.sistoque.controller.MovimentacaoController;
 import br.com.fiap.sistoque.validation.TipoMovimentacao;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -51,6 +55,15 @@ public class Movimentacao extends EntityModel<Movimentacao> {
     @ManyToOne
     private Categoria categoria;
 
+    public EntityModel<Movimentacao> toEntityModel() {
+        return EntityModel.of(
+            this,
+            linkTo(methodOn(MovimentacaoController.class).show(id)).withSelfRel(),
+            linkTo(methodOn(MovimentacaoController.class).destroy(id)).withRel("delete"),
+            linkTo(methodOn(MovimentacaoController.class).index(null, null, null)).withRel("contents")
+
+        );
+    }
     
 
 }
